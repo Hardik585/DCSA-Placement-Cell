@@ -28,12 +28,12 @@ public class ApplicationEntity {
     @CreationTimestamp
     private LocalDateTime appliedAt;
 
-    // 🔗 Student (User)
+    //Student (User)
     @ManyToOne
     @JoinColumn(name = "student_id")
     private UserEntity student;
 
-    // 🔗 Job
+    //Job
     @ManyToOne
     @JoinColumn(name = "job_id")
     private JobEntity job;

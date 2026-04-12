@@ -1,4 +1,8 @@
 package com.hardik.backend.enums;
 
-public enum ApplicationEnum {
+public enum ApplicationStatus {
+    APPLIED,
+    SHORTLISTED,
+    REJECTED,
+    SELECTED
 }
