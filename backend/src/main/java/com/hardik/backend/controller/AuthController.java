@@ -1,8 +1,10 @@
 package com.hardik.backend.controller;
 
+import com.hardik.backend.dto.LoginRequest;
 import com.hardik.backend.model.UserEntity;
 import com.hardik.backend.repository.UserRepository;
 import com.hardik.backend.utils.JwtUtil;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,12 +23,10 @@ public class AuthController {
     private final JwtUtil jwtUtil;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody Map<String, String> request) {
-        String email = request.get("email");
-        String password = request.get("password");
-        UserEntity user = userRepository.findByEmail(email)
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest request) {
+        UserEntity user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        if (!user.getPassword().equals(password)) {
+        if (!user.getPassword().equals(request.getPassword())) {
             throw new RuntimeException("Invalid credentials");
         }
         String token = jwtUtil.generateToken(user.getEmail(), user.getRole().name());

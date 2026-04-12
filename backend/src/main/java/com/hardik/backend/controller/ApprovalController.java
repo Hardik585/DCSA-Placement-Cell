@@ -1,9 +1,14 @@
 package com.hardik.backend.controller;
 
+import com.hardik.backend.dto.ApprovalRequest;
 import com.hardik.backend.dto.ReviewRequest;
+import com.hardik.backend.model.UserEntity;
 import com.hardik.backend.service.ApplicationService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,22 +19,15 @@ public class ApprovalController {
     private final ApplicationService applicationService;
 
     // Approve or Reject request of the company
-    @PutMapping("/{requestId}/review")
-    public ResponseEntity<String> reviewRequest(
-            @PathVariable Long requestId,
-            @RequestBody ReviewRequest request
-    ) {
+    @PutMapping("/{id}/review")
+    public ResponseEntity<String> reviewRequest(@PathVariable Long id, @Valid @RequestBody ApprovalRequest request) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserEntity admin = (UserEntity) auth.getPrincipal();
         String response = applicationService.reviewRequest(
-                requestId,
-                request.getAdminId(),
-                request.isApprove()
+                id,
+                admin.getId(),
+                request.getApprove()
         );
-
         return ResponseEntity.ok(response);
-    }
-
-    @GetMapping("/test")
-    public String test(){
-        return "test";
     }
 }
