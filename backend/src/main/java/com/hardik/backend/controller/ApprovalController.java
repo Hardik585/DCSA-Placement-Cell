@@ -27,4 +27,9 @@ public class ApprovalController {
 
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/test")
+    public String test(){
+        return "test";
+    }
 }
