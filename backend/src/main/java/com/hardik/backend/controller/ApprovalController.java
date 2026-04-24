@@ -12,14 +12,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/approvals")
+@RequestMapping("/api/admin/")
 @RequiredArgsConstructor
 public class ApprovalController {
 
     private final ApplicationService applicationService;
 
     // Approve or Reject request of the company
-    @PutMapping("/{id}/review")
+    @PutMapping("/{id}/approvals")
     public ResponseEntity<String> reviewRequest(@PathVariable Long id, @Valid @RequestBody ApprovalRequest request) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserEntity admin = (UserEntity) auth.getPrincipal();
