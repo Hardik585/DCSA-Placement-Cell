@@ -1,19 +1,25 @@
 package com.hardik.backend.utils;
 
+import com.hardik.backend.model.UserEntity;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.crypto.SecretKey;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
 public class JwtUtil {
 
     @Value("${jwt.secret.key}")
-    private String SECRET_KEY;
+    private String SECRET;
+//    private final SecretKey secretKey = Keys.hmacShaKeyFor(SECRET.getBytes());
 
     public String generateToken(String email, String role) {
         return Jwts.builder()
@@ -21,19 +27,32 @@ public class JwtUtil {
                 .claim("role", role)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 hrs
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+                .signWith(Keys.hmacShaKeyFor(SECRET.getBytes()), SignatureAlgorithm.HS256)
                 .compact();
     }
 
     public String extractEmail(String token) {
-        return getClaims(token).getSubject();
+        return extractClaims(token).getSubject();
     }
 
-    public String extractRole(String token) {
-        return (String) getClaims(token).get("role");
+    private Claims extractClaims(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(Keys.hmacShaKeyFor(SECRET.getBytes()))
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 
-    private Claims getClaims(String token) {
-        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
+    public boolean validateToken(String email, String token) {
+        String extractEmail = extractEmail(token);
+        System.out.println("extract email : " + extractEmail);
+        System.out.println("email : " + email);
+        return email.equals(extractEmail) && !isTokenExpired(token);
+    }
+
+    private boolean isTokenExpired(String token) {
+        System.out.println("token expiration time  : " + extractClaims(token).getExpiration());
+        System.out.println("is not expired  : " + extractClaims(token).getIssuedAt().before(new Date()));
+        return extractClaims(token).getExpiration().before(new Date());
     }
 }
