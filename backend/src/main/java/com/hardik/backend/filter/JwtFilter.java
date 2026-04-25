@@ -38,13 +38,13 @@ public class JwtFilter extends OncePerRequestFilter {
                 UserEntity userEntity = userRepository.findByEmail(email)
                         .orElseThrow(() -> new RuntimeException("User not found with this email"));
                 //now checking if the token expired
-                System.out.println(userEntity.getEmail());
-                System.out.println(userEntity.getRole().name());
+//                System.out.println(userEntity.getEmail());
+//                System.out.println(userEntity.getRole().name());
                 if (jwtUtil.validateToken(userEntity.getEmail(), token)) {
                     UsernamePasswordAuthenticationToken authToken = getUsernamePasswordAuthenticationToken(request, userEntity);
                     //setting the security context
                     SecurityContextHolder.getContext().setAuthentication(authToken);
-                    System.out.println("Security Context set : => " + SecurityContextHolder.getContext().getAuthentication());
+//                    System.out.println("Security Context set : => " + SecurityContextHolder.getContext().getAuthentication());
                 }
             }
         }

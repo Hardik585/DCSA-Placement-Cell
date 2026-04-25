@@ -18,7 +18,7 @@ public class ApprovalController {
 
     private final ApplicationService applicationService;
 
-    // Approve or Reject request of the company
+    // Approve or Reject request of the student who reached to the limit
     @PutMapping("/{id}/approvals")
     public ResponseEntity<String> reviewRequest(@PathVariable Long id, @Valid @RequestBody ApprovalRequest request) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
