@@ -1,14 +1,16 @@
 package com.hardik.backend.service;
 
+import com.hardik.backend.dto.JobFilterRequest;
+import com.hardik.backend.dto.JobFilterResponse;
 import com.hardik.backend.dto.JobResponse;
+import com.hardik.backend.mapper.JobMapper;
 import com.hardik.backend.model.JobEntity;
 import com.hardik.backend.repository.JobRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -34,5 +36,14 @@ public class JobServiceImpl implements JobService {
 
         return new JobResponse<>(jobs, size, nextCursor, hasNext);
 
+    }
+
+    @Override
+    public Page<JobFilterResponse> filterJobs(JobFilterRequest filterRequest, Pageable pageable) {
+        Page<JobEntity> pages = jobRepository.searchJobs(filterRequest.getMinCgpa(), filterRequest.getCourse(), filterRequest.getKeyword(),pageable);
+        return pages.map(job -> JobMapper.toJobFilterResponse(
+                job,
+                job.getCompany().getName()
+        ));
     }
 }
