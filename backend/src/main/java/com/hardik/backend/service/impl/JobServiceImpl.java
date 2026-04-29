@@ -1,4 +1,4 @@
-package com.hardik.backend.service;
+package com.hardik.backend.service.impl;
 
 import com.hardik.backend.dto.JobFilterRequest;
 import com.hardik.backend.dto.JobFilterResponse;
@@ -6,11 +6,11 @@ import com.hardik.backend.dto.JobResponse;
 import com.hardik.backend.mapper.JobMapper;
 import com.hardik.backend.model.JobEntity;
 import com.hardik.backend.repository.JobRepository;
+import com.hardik.backend.service.JobService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 
 @Service

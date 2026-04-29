@@ -36,7 +36,7 @@ public class UserEntity {
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
-    // 🔗 One-to-One with StudentProfile
+    //One-to-One with StudentProfile
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private StudentProfileEntity studentProfile;
 }

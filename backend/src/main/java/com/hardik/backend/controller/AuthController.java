@@ -1,7 +1,7 @@
 package com.hardik.backend.controller;
 
 import com.hardik.backend.dto.LoginRequest;
-import com.hardik.backend.service.AppUserDetailsService;
+import com.hardik.backend.service.impl.AppUserDetailsService;
 import com.hardik.backend.utils.JwtUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

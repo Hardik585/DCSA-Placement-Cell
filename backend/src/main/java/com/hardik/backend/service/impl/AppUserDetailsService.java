@@ -1,4 +1,4 @@
-package com.hardik.backend.service;
+package com.hardik.backend.service.impl;
 
 import com.hardik.backend.model.UserEntity;
 import com.hardik.backend.repository.UserRepository;
