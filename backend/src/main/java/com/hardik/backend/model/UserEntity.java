@@ -32,6 +32,9 @@ public class UserEntity {
 
     private Boolean isActive = true;
 
+    private String resetOtp;
+    private Long resetOtpExpireAt;
+
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime createdAt;

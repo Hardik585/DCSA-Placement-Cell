@@ -1,24 +1,22 @@
 package com.hardik.backend.dto;
 
-import com.hardik.backend.enums.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-public class AdminCreateUserDTO {
+public class ResetPasswordDto {
 
-    @NotBlank(message = "username is required")
-    private String username;
     @Email(message = "Invalid email")
     @NotBlank(message = "email is required")
     private String email;
-    @NotBlank(message = "Role can't be empty")
-    private Role role;
+    @NotBlank(message = "otp is required")
+    private String resetOtp;
+    @NotBlank(message = "New Password is required")
+    private String newPassword;
 }

@@ -1,14 +1,14 @@
 package com.hardik.backend.controller;
 
 import com.hardik.backend.dto.LoginRequest;
+import com.hardik.backend.dto.ChangePasswordDto;
+import com.hardik.backend.dto.ResetPasswordDto;
 import com.hardik.backend.dto.UserRequestDto;
 import com.hardik.backend.enums.Role;
 import com.hardik.backend.service.UserService;
-import com.hardik.backend.service.impl.AppUserDetailsService;
 import com.hardik.backend.utils.JwtUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -75,5 +75,23 @@ public class AuthController {
         } else {
             return ResponseEntity.badRequest().body("Register Failed");
         }
+    }
+
+    @PostMapping("/change-password")
+    public ResponseEntity<?> changePassword(@Valid @RequestBody ChangePasswordDto request) {
+        userService.changePassword(request.getEmail(), request.getOldPassword(), request.getNewPassword());
+        return ResponseEntity.ok("Reset Successfully");
+    }
+
+    @PostMapping("/send-reset-otp")
+    public ResponseEntity<?> sendResetOtpRequest(@RequestBody String email) {
+        userService.sendResetOtp(email);
+        return ResponseEntity.ok("Reset Otp send successfully to Email: " + email);
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@Valid @RequestBody ResetPasswordDto request) {
+        userService.verifyResetOtpAndChangePassword(request.getEmail(), request.getResetOtp(), request.getNewPassword());
+        return ResponseEntity.ok("Reset Password Successfully");
     }
 }

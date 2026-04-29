@@ -10,7 +10,6 @@ public class UserMapper {
         return UserEntity.builder()
                 .name(req.getUsername())
                 .email(req.getEmail())
-                .password(req.getPassword())
                 .role(role)
                 .build();
     }
