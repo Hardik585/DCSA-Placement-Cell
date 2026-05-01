@@ -52,8 +52,8 @@ public class EmailServiceImpl implements EmailService {
             mimeMessageHelper.setTo(toEmail);
             mimeMessageHelper.setSubject("Password Reset CODE ");
             mimeMessageHelper.setText("Please use this code to reset the password for your account "
-                    + toEmail + "\n Here is your code:\n\n" + otp
-                    + "Thanks,\n\n"
+                    + "\n Here is your code:\n\n" + otp
+                    + "\n\nThanks,\n\n"
                     + "Department of Computer Science and Applications");
             mailSender.send(mimeMessage);
         } catch (Exception e) {
