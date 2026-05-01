@@ -8,7 +8,7 @@ public class UserMapper {
 
     public static UserEntity ToUserEntity(UserRequestDto req, Role role) {
         return UserEntity.builder()
-                .name(req.getUsername())
+                .fullName(req.getUsername())
                 .email(req.getEmail())
                 .role(role)
                 .build();
