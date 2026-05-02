@@ -18,7 +18,11 @@ public class CompanyEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String name;
+
+    @Column(unique = true, nullable = false)
+    private String email;
 
     private String description;
 
@@ -29,7 +33,7 @@ public class CompanyEntity {
     @JoinColumn(name = "created_by")
     private UserEntity createdBy;
 
-    // 🔗 One-to-Many Jobs
+    //One-to-Many Jobs
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
     private List<JobEntity> jobs;
 }
