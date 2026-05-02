@@ -19,14 +19,30 @@ public class StudentProfileServiceImpl implements StudentProfileService {
     private final StudentProfileRepository stdProfileRepository;
 
     @Override
-    public void saveProfile(StudentProfileRequestDto stdRequest, UserEntity userEntity) {
+    public StudentProfileResponseDto saveProfile(StudentProfileRequestDto stdRequest, UserEntity userEntity) {
+        if (stdProfileRepository.existsByUserId(userEntity.getId())) {
+            throw new RuntimeException("Profile already exists. Use update instead.");
+        }
         StudentProfileEntity profileEntity = StdProfileMapper.toStdEntity(stdRequest, userEntity);
-        stdProfileRepository.save(profileEntity);
+        StudentProfileEntity savedProfile = stdProfileRepository.save(profileEntity);
+        return StdProfileMapper.toStdResponseDto(savedProfile);
     }
 
     @Override
     public StudentProfileResponseDto getProfile(Long uId) {
         StudentProfileEntity stdProfile = stdProfileRepository.findByUserId(uId).orElseThrow(() -> new RuntimeException("Student Profile Not Found"));
         return StdProfileMapper.toStdResponseDto(stdProfile);
+    }
+
+    @Override
+    public StudentProfileResponseDto updateProfile(Long uId, StudentProfileRequestDto stdRequest) {
+        StudentProfileEntity stdProfile = stdProfileRepository.findByUserId(uId).orElseThrow(() -> new RuntimeException("Student Profile Not Found"));
+        stdProfile.setBranch(stdRequest.getBranch());
+        stdProfile.setCgpa(stdRequest.getCgpa());
+        stdProfile.setPhone(stdRequest.getPhone());
+        stdProfile.setResumeUrl(stdRequest.getResumeUrl());
+        stdProfile.setGraduationYear(stdRequest.getGraduationYear());
+        StudentProfileEntity savedProfile = stdProfileRepository.save(stdProfile);
+        return StdProfileMapper.toStdResponseDto(savedProfile);
     }
 }

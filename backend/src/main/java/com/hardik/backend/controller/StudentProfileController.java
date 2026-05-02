@@ -6,12 +6,9 @@ import com.hardik.backend.model.UserEntity;
 import com.hardik.backend.service.StudentProfileService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,17 +27,23 @@ public class StudentProfileController {
     }
 
     @PreAuthorize("hasRole('STUDENT')")
-    @PostMapping("/save")
+    @PostMapping("/api/save")
     public ResponseEntity<?> saveProfile(@Valid @RequestBody StudentProfileRequestDto stdRequest) {
-        System.out.println("current user : " + getCurrentUser());
-        stdService.saveProfile(stdRequest, getCurrentUser());
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        StudentProfileResponseDto responseDto = stdService.saveProfile(stdRequest, getCurrentUser());
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
 
-    @GetMapping("/my")
-    public ResponseEntity<StudentProfileResponseDto> getProfile() {
+    @GetMapping("/api/my")
+    public ResponseEntity<?> getProfile() {
         UserEntity currentUser = getCurrentUser();
         StudentProfileResponseDto response = stdService.getProfile(currentUser.getId());
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/api/update")
+    public ResponseEntity<?> updateProfile(@Valid @RequestBody StudentProfileRequestDto stdRequest) {
+        UserEntity currentUser = getCurrentUser();
+        StudentProfileResponseDto response = stdService.updateProfile(currentUser.getId(), stdRequest);
         return ResponseEntity.ok(response);
     }
 }

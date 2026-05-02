@@ -7,6 +7,7 @@ import com.hardik.backend.model.UserEntity;
 
 public interface StudentProfileService {
 
-    public void saveProfile(StudentProfileRequestDto stdRequest, UserEntity userEntity);
+    public StudentProfileResponseDto saveProfile(StudentProfileRequestDto stdRequest, UserEntity userEntity);
     public StudentProfileResponseDto getProfile(Long uId);
+    public StudentProfileResponseDto updateProfile(Long uId, StudentProfileRequestDto stdRequest);
 }
