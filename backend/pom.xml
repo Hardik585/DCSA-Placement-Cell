@@ -150,6 +150,7 @@
                 </executions>
             </plugin>
         </plugins>
+        <finalName>placement-app</finalName>
     </build>
 
 </project>
