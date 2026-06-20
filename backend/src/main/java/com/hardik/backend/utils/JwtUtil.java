@@ -36,12 +36,14 @@ public class JwtUtil {
     }
 
     private Claims extractClaims(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(Keys.hmacShaKeyFor(SECRET.getBytes()))
+        SecretKey key = Keys.hmacShaKeyFor(SECRET.getBytes());
+        return Jwts.parser()
+                .verifyWith(key)
                 .build()
-                .parseClaimsJws(token)
-                .getBody();
+                .parseSignedClaims(token)
+                .getPayload();
     }
+
 
     public boolean validateToken(String email, String token) {
         String extractEmail = extractEmail(token);
